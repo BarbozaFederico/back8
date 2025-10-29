@@ -58,11 +58,59 @@ python -m backgammon.cli.console
 
 ## Uso de la Interfaz CLI
 
-
+La interfaz de consola (CLI) te permite jugar Backgammon directamente desde tu terminal. Es ideal para partidas rápidas y para entender la lógica del juego sin distracciones.
 
 ### Cómo Jugar en CLI:
 
+1. **Inicio del Juego**:
+   - Ejecuta el comando `python -m backgammon.cli.console`.
+   - El juego te pedirá que introduzcas el nombre para el Jugador 1 (blancas) y el Jugador 2 (negras). Si no introduces un nombre, se usarán "Blanco" y "Negro" por defecto.
 
+2. **Lanzar los Dados**:
+   - El juego te indicará de quién es el turno.
+   - Presiona `ENTER` para lanzar los dados. Los resultados se mostrarán en pantalla.
+
+3. **Ver el Tablero**:
+   - Después de lanzar los dados, se mostrará una representación textual del tablero.
+   - Las fichas se representan por su inicial (`B` para blancas, `N` para negras).
+   - La barra central y las fichas que han salido del juego (bear-off) también se muestran.
+
+4. **Seleccionar un Movimiento**:
+   - El juego calculará y mostrará una lista numerada de todos los movimientos legales que puedes hacer con los dados obtenidos.
+   - Cada opción describe la secuencia de movimientos (origen, destino y dado utilizado). Ejemplo: `1: 24 -> 18 (Dado: 6) | 18 -> 16 (Dado: 2)`.
+   - Si una ficha es capturada, se indicará con `[Captura]`.
+
+5. **Introducir tu Elección**:
+   - Escribe el número del movimiento que deseas realizar y presiona `ENTER`.
+   - El juego aplicará el movimiento y actualizará el estado del tablero.
+
+6. **Finalizar el Turno**:
+   - Una vez realizado el movimiento, presiona `ENTER` para pasar el turno al siguiente jugador.
+
+7. **Ganar la Partida**:
+   - El juego termina cuando un jugador ha sacado (bear-off) todas sus 15 fichas del tablero.
+   - Se mostrará un mensaje indicando quién es el ganador.
+
+### Ejemplo de Interacción en CLI:
+
+```
+$ python -m backgammon.cli.console
+Nombre jugador 1 (blancas): JugadorA
+Nombre jugador 2 (negras): JugadorB
+
+--- Turno de JugadorA (blancas) ---
+... (tablero) ...
+Presiona ENTER para lanzar los dados...
+Dados lanzados: [5, 2]
+
+JugadorA, selecciona tu movimiento:
+1: 8 -> 3 (Dado: 5) | 6 -> 4 (Dado: 2)
+2: 6 -> 1 (Dado: 5) | 13 -> 11 (Dado: 2)
+Ingrese el número de movimiento (1-2): 1
+
+Movimiento aplicado.
+Presiona ENTER para finalizar tu turno...
+```
 
 ## Estructura del Proyecto
 

@@ -440,12 +440,45 @@ Player -----> Checker (15 fichas)
 
 ---
 
+## Justificación de la Interfaz de Usuario (UI)
+
+Se implementaron dos interfaces de usuario para cumplir con diferentes objetivos: una gráfica con Pygame para una experiencia de juego intuitiva y una de consola (CLI) para pruebas rápidas y desarrollo.
+
+### 1. Interfaz Gráfica con Pygame (`pygame_ui`)
+
+**¿Por qué Pygame?**
+- **Visual y Educativo**: Pygame permite crear una representación gráfica del tablero, fichas y dados, lo que facilita a los jugadores entender el estado del juego de un vistazo.
+- **Interactividad**: La interacción mediante clics del mouse (seleccionar ficha, elegir destino) es mucho más intuitiva que introducir comandos en una consola.
+- **Feedback Inmediato**: El resaltado de movimientos legales (círculos verdes) y las animaciones (aunque simples) guían al usuario y confirman sus acciones.
+- **Modularidad**: La UI de Pygame está completamente separada de la lógica del juego. El `core` no sabe que Pygame existe. Esto permite cambiar la UI o incluso añadir una tercera (por ejemplo, web) sin tocar la lógica.
+
+**Decisiones de Diseño en Pygame:**
+- **Clase `UI` centralizada**: Gestiona el bucle principal, el renderizado de todos los elementos (tablero, fichas, dados) y la captura de eventos del usuario (clics).
+- **Traducción de Coordenadas**: La UI traduce los clics del mouse en coordenadas de píxeles a la lógica del tablero (puntos 1-24, barra, etc.). Esta es su principal responsabilidad.
+- **Indicadores Visuales**: Se decidió usar colores y formas simples (círculos verdes, resaltado de fichas) para no sobrecargar la pantalla y mantener la claridad.
+- **Flujo de Juego**: La UI sigue el flujo del `BackgammonGame`: lanza dados, espera la selección del jugador, aplica el movimiento y actualiza la pantalla.
+
+### 2. Interfaz de Consola (`cli`)
+
+**¿Por qué una CLI?**
+- **Desarrollo Rápido**: Permite probar la lógica del juego sin necesidad de interactuar con una interfaz gráfica. Es ideal para depurar reglas, movimientos y estados del juego.
+- **Testing Automatizado**: La entrada y salida de la CLI pueden ser redirigidas, lo que facilita la creación de scripts de prueba automáticos. Por ejemplo: `echo -e "1\n" | python -m backgammon.cli.console`.
+- **Bajo Consumo de Recursos**: No requiere una ventana gráfica, por lo que es ligera y rápida de ejecutar.
+- **Accesibilidad**: Funciona en cualquier terminal sin necesidad de un entorno gráfico.
+
+**Decisiones de Diseño en la CLI:**
+- **Representación Textual del Tablero**: Se diseñó una visualización del tablero usando caracteres ASCII que, aunque simple, muestra claramente la posición de las fichas, la barra y las fichas fuera.
+- **Selección por Menú Numérico**: En lugar de pedir al usuario que escriba coordenadas complejas, el juego genera una lista numerada de todos los movimientos legales disponibles. El jugador solo tiene que elegir un número. Esto reduce errores de entrada y simplifica la interacción.
+- **Flujo Guiado**: El juego guía al usuario paso a paso: "Presiona ENTER para lanzar dados", "Selecciona tu movimiento", "Presiona ENTER para finalizar turno". Esto hace que la experiencia sea clara a pesar de ser en texto.
+
+---
+
 ## Conclusión
 
 El diseño de este proyecto equilibra:
 - **Claridad:** Código fácil de entender
 - **Mantenibilidad:** Fácil de modificar y extender
 - **Corrección:** Las reglas de Backgammon se implementan fielmente
-- **Testabilidad:** Cada componente se puede probar independientemente
+- **Testabilidad:** Cada componente se puede probar independemente
 
 Cada decisión fue tomada considerando estos principios, resultando en un codebase robusto y profesional.
