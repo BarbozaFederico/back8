@@ -1,0 +1,74 @@
+classDiagram
+    class Player {
+        - nombre: str
+        - color: str
+        - fichas: List[Checker]
+        - en_barra: int
+        - fuera: int
+        + __init__(nombre: str, color: str)
+        + puede_bear_off(board: Board) -> bool
+        + agregar_ficha_barra()
+        + quitar_ficha_barra()
+        + agregar_ficha_fuera()
+        + fichas_en_juego() -> int
+    }
+
+    class Checker {
+        - color: str
+        + __init__(color: str)
+        + get_color() -> str
+    }
+
+    class Dice {
+        - valores: List[int]
+        - usados: List[bool]
+        + __init__()
+        + tirar()
+        + usar_dado(valor: int)
+        + disponibles() -> List[int]
+        + set_values(valores: List[int])
+    }
+
+    class Move {
+        - origen: int
+        - destino: int
+        - valor_dado: int
+        + __init__(origen: int, destino: int, valor_dado: int)
+        + __repr__() -> str
+    }
+
+    class Board {
+        - puntos: List[List[Checker]]
+        - barra_blanca: List[Checker]
+        - barra_negra: List[Checker]
+        - fuera_blanca: List[Checker]
+        - fuera_negra: List[Checker]
+        + __init__()
+        + aplicar_movimiento(player: Player, movimientos: List[Move])
+        + enumerar_opciones_legales(player: Player, dados: Dice) -> List[List[Move]]
+        + jugador_tiene_en_barra(player: Player) -> bool
+        + jugador_todo_en_home(player: Player) -> bool
+        + jugador_pip_count(player: Player) -> int
+        + oponente_en_cuadrante(player: Player) -> bool
+    }
+
+    class BackgammonGame {
+        - board: Board
+        - jugadores: List[Player]
+        - dados: Dice
+        - turno: int
+        + __init__(jugador1: Player, jugador2: Player)
+        + iniciar_partida()
+        + siguiente_turno()
+        + aplicar_movimiento(movimientos: List[Move])
+        + obtener_ganador() -> Optional[Player]
+    }
+
+    Player "1" o-- "*" Checker : posee
+    Board "1" o-- "*" Checker : contiene
+    Board "1" o-- "2" Player : referencia
+    BackgammonGame "1" o-- "1" Board : usa
+    BackgammonGame "1" o-- "2" Player : gestiona
+    BackgammonGame "1" o-- "1" Dice : usa
+    Board "1" o-- "*" Move : aplica
+    BackgammonGame "1" o-- "*" Move : aplica
