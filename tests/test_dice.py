@@ -33,3 +33,10 @@ def test_dice_get_values_consistency():
     dice.dice1 = 4
     dice.dice2 = 5
     assert dice.get_values() == (4, 5)
+
+
+def test_dice_set_values():
+    """Testea que set_values actualiza los valores de los dados."""
+    dice = Dice()
+    dice.set_values((3, 6))
+    assert dice.get_values() == (3, 6)

@@ -1,19 +1,31 @@
-....................................................F
-================================== FAILURES ===================================
-________________________________ test_str_repr ________________________________
+============================= test session starts ==============================
+platform linux -- Python 3.12.12, pytest-8.4.2, pluggy-1.6.0
+rootdir: /app
+configfile: pytest.ini
+plugins: cov-7.0.0
+collected 93 items
 
-    def test_str_repr():
-        """Testea las representaciones __str__ y __repr__ de Checker."""
-        checker = Checker(color="negras", posicion=3, identificador="A1")
-        s = str(checker)
-        r = repr(checker)
-        assert "Checker(" in s
-        assert "negras" in s
->       assert "pos 3" in s
-E       AssertionError: assert 'pos 3' in 'Checker(negras, pos 4)'
+tests/test_backgammon.py .......                                         [  7%]
+tests/test_board.py .................................................... [ 63%]
+                                                                         [ 63%]
+tests/test_board_invalid_dados.py .                                      [ 64%]
+tests/test_checker.py .......                                            [ 72%]
+tests/test_dice.py .....                                                 [ 77%]
+tests/test_move.py .....                                                 [ 82%]
+tests/test_player.py ................                                    [100%]
 
-..\computacion-2025-backgammon-BarbozaFederico\tests\test_checker.py:77: AssertionError
-=========================== short test summary info ===========================
-FAILED tests/test_checker.py::test_str_repr - AssertionError: assert 'pos 3' ...
-!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
-1 failed, 52 passed in 0.14s
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.12.12-final-0 _______________
+
+Name                            Stmts   Miss Branch BrPart  Cover   Missing
+---------------------------------------------------------------------------
+backgammon/core/backgammon.py      55      0     24      1    99%   110->117
+backgammon/core/board.py          334     28    196     32    87%   316->315, 318, 319->315, 347, 351, 360, 399-400, 405->404, 417->425, 450-451, 465->460, 499-500, 526->533, 541-544, 554-563, 575, 620, 631, 659, 726, 751->750, 767->778, 771->778, 773->778, 774->773, 780, 784-785, 793->exit, 865
+backgammon/core/checker.py         44      0      0      0   100%
+backgammon/core/dice.py            13      0      0      0   100%
+backgammon/core/move.py            18      0      4      0   100%
+backgammon/core/player.py          80      0      2      0   100%
+---------------------------------------------------------------------------
+TOTAL                             544     28    226     33    91%
+Coverage XML written to file cobertura.xml
+============================== 93 passed in 0.86s ==============================

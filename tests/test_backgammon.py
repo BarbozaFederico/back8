@@ -104,3 +104,11 @@ def test_is_game_over_false_true():
     for checker in player.get_checkers():
         checker.sacar()
     assert game.is_game_over()
+
+
+def test_start_game_with_specific_player():
+    """Testea el inicio del juego con un jugador específico."""
+    game = BackgammonGame()
+    game.setup_players(get_player_configs())
+    game.start_game(primer_jugador_color="negras")
+    assert game.get_current_player().get_color() == "negras"

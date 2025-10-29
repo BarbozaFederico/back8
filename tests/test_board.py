@@ -739,3 +739,142 @@ def test_bear_off_excepcion_ficha_mas_lejana_con_dado_mayor():
     bear_off_move = next((m for m in moves if m.hasta is None), None)
     assert bear_off_move is not None, "No se generó ningún movimiento de bear-off"
     assert bear_off_move.desde == 20, "No se está sacando la ficha más lejana"
+
+
+def test_oponente_en_cuadrante():
+    """Testea la detección de oponentes en el cuadrante de casa."""
+    board = Board()
+    p1 = DummyPlayer("blancas")
+    p2 = DummyPlayer("negras")
+    board.add_player(p1)
+    board.add_player(p2)
+
+    # Sin oponentes en el cuadrante
+    assert board.oponente_en_cuadrante(p1) is False
+
+    # Con oponente en el cuadrante
+    board.place_checker(Checker("negras"), 18)
+    assert board.oponente_en_cuadrante(p1) is True
+
+
+def test__calcular_hash_tablero():
+    """Testea el cálculo del hash del tablero."""
+    board = Board()
+    board.place_checker(Checker("blancas"), 0)
+    board.place_checker(Checker("negras"), 23)
+    board.bar["blancas"].append(Checker("blancas"))
+    hash1 = board._calcular_hash_tablero()
+    board.move_checker(board.points[0][0], 0, 1)
+    hash2 = board._calcular_hash_tablero()
+    assert hash1 != hash2
+
+
+def test__deshacer_paso_movimiento():
+    """Testea el método para deshacer un movimiento."""
+    board = Board()
+    from backgammon.core.player import PasoMovimiento
+
+    player = DummyPlayer()
+    checker = Checker("blancas")
+    board.place_checker(checker, 0)
+
+    # Test deshacer movimiento normal
+    paso = PasoMovimiento(desde=0, hasta=5, dado=5, captura=False)
+    board._aplicar_paso_movimiento(player, paso)
+    assert checker in board.points[5]
+    board._deshacer_paso_movimiento(player, paso)
+    assert checker in board.points[0]
+    assert checker not in board.points[5]
+
+    # Test deshacer captura
+    checker_negra = Checker("negras")
+    board.place_checker(checker_negra, 5)
+    paso_captura = PasoMovimiento(desde=0, hasta=5, dado=5, captura=True)
+    board._aplicar_paso_movimiento(player, paso_captura)
+    assert checker_negra in board.bar["negras"]
+    board._deshacer_paso_movimiento(player, paso_captura)
+    assert checker_negra in board.points[5]
+    assert checker in board.points[0]
+
+
+def test__encontrar_secuencias_recursivo():
+    """Testea el método para encontrar secuencias recursivamente."""
+    board = Board()
+    player = DummyPlayer()
+    board.place_checker(Checker("blancas"), 0)
+    opciones = []
+    board._encontrar_secuencias_recursivo(player, [1, 2], [], opciones)
+    assert len(opciones) > 0
+
+
+def test__generar_movimientos_posibles_bear_off():
+    """Testea la generación de movimientos posibles durante el bear off."""
+    board = Board()
+    player = DummyPlayer()
+    player.puede_bear_off = lambda b: True
+    board.place_checker(Checker("blancas"), 23)
+    moves = board._generar_movimientos_posibles(player, 1, board)
+    assert len(moves) > 0
+
+
+def test_jugador_pip_count_en_barra():
+    """Testea el cálculo del pip count con fichas en la barra."""
+    board = Board()
+    player = DummyPlayer()
+    board.add_player(player)
+    checker = player.get_checkers()[0]
+    board.send_to_bar(checker)
+
+    # The other 14 checkers are in the "fuera" state by default in the dummy checker,
+    # so they don't add to the pip count.
+    # A checker on the bar is 25 pips away.
+    pip = board.jugador_pip_count(player)
+    assert pip == 25
+
+
+def test_jugador_todo_en_home_negras():
+    """Testea que jugador_todo_en_home funcione para las negras."""
+    board = Board()
+    player = DummyPlayer(color="negras", direccion=-1)
+    board.add_player(player)
+    # Coloca todas las fichas en la casa de las negras (0-5)
+    for checker in player.get_checkers():
+        board.place_checker(checker, 3)
+    assert board.jugador_todo_en_home(player) is True
+
+
+def test_bear_off_negras():
+    """Testea el bear off para el jugador negro."""
+    board = Board()
+    player = DummyPlayer(color="negras", direccion=-1)
+    board.add_player(player)
+    checker = player.get_checkers()[0]
+    # Coloca la ficha en el punto 0 para que pueda salir con un 1
+    board.place_checker(checker, 0)
+    # Simula que el jugador puede hacer bear off
+    player.puede_bear_off = lambda b: True
+    moves = board._generar_movimientos_posibles(player, 1, board)
+    bear_off_move = next((m for m in moves if m.hasta is None), None)
+    assert bear_off_move is not None
+    assert bear_off_move.desde == 0
+
+
+def test__deshacer_paso_movimiento_bear_off():
+    """Testea deshacer un movimiento de bear off."""
+    board = Board()
+    from backgammon.core.player import PasoMovimiento
+
+    player = DummyPlayer()
+    checker = player.get_checkers()[0]
+    # Coloca la ficha en una posición desde donde pueda hacer bear off
+    board.place_checker(checker, 23)
+
+    # Movimiento de bear off
+    paso = PasoMovimiento(desde=23, hasta=None, dado=1, captura=False)
+    board._aplicar_paso_movimiento(player, paso)
+    assert checker.fuera()
+
+    # Deshacer el movimiento
+    board._deshacer_paso_movimiento(player, paso)
+    assert not checker.fuera()
+    assert checker in board.points[23]
