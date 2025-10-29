@@ -195,7 +195,7 @@ El proyecto sigue los principios SOLID:
 ## Autor
 
 **Federico Barboza**  
-Legajo: [Tu Legajo]  
+Legajo: [64281]  
 Repositorio: [computacion-2025-backgammon-BarbozaFederico](https://github.com/BarbozaFederico/computacion-2025-backgammon-BarbozaFederico)
 
 ## Licencia
