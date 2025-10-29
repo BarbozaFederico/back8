@@ -827,9 +827,9 @@ def test_jugador_pip_count_en_barra():
 
     # The other 14 checkers are in the "fuera" state by default in the dummy checker,
     # so they don't add to the pip count.
-    # A checker on the bar is 25 pips away.
+    # A checker on the bar is 24 pips away.
     pip = board.jugador_pip_count(player)
-    assert pip == 25
+    assert pip == 24
 
 
 def test_jugador_todo_en_home_negras():

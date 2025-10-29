@@ -1,32 +1,63 @@
 classDiagram
     class Player {
-        - nombre: str
-        - color: str
-        - fichas: List[Checker]
-        - en_barra: int
-        - fuera: int
-        + __init__(nombre: str, color: str)
-        + puede_bear_off(board: Board) -> bool
-        + agregar_ficha_barra()
-        + quitar_ficha_barra()
-        + agregar_ficha_fuera()
-        + fichas_en_juego() -> int
+        - __id__: str
+        - __nombre__: str
+        - __color__: str
+        - __direccion__: int
+        - __home_points__: frozenset[int]
+        - __entry_point__: int
+        - __checkers__: list[Checker]
+        - __politica__: Politica
+        + __init__(player_id: str, nombre: str, color: str, direccion: int, home_points: Iterable[int], entry_point: int, checkers: Iterable[Checker], politica: Optional[Politica])
+        + get_id() -> str
+        + get_nombre() -> str
+        + get_color() -> str
+        + get_direccion() -> int
+        + get_home_points() -> frozenset[int]
+        + get_entry_point() -> int
+        + get_checkers() -> List[Checker]
+        + tiene_en_barra(tablero: TableroFachada) -> bool
+        + todas_en_home(tablero: TableroFachada) -> bool
+        + pip_count(tablero: TableroFachada) -> int
+        + movimientos_legales(tablero: TableroFachada, dados: Sequence[ValorDado]) -> List[OpcionMovimiento]
+        + elegir_movimiento(opciones: List[OpcionMovimiento]) -> Optional[SecuenciaMovimiento]
+        + confirmar_movimiento(tablero: TableroFachada, secuencia: SecuenciaMovimiento)
+        + puede_bear_off(tablero: TableroFachada) -> bool
+        + colocar_checker_en_posicion(checker: Checker, posicion: int)
+        + mover_checker_a(checker: Checker, posicion: int)
+        + enviar_checker_a_barra(checker: Checker)
+        + sacar_checker(checker: Checker)
+        + checkers_en_tablero() -> List[Checker]
+        + checkers_en_barra() -> List[Checker]
+        + checkers_fuera() -> List[Checker]
     }
 
     class Checker {
-        - color: str
+        - __color__: str
+        - __posicion__: Optional[int]
+        - __en_barra__: bool
+        - __fuera__: bool
         + __init__(color: str)
         + get_color() -> str
+        + get_posicion() -> Optional[int]
+        + en_tablero() -> bool
+        + en_barra() -> bool
+        + fuera() -> bool
+        + colocar_en_posicion(posicion: int)
+        + mover_a(posicion: int)
+        + enviar_a_barra()
+        + sacar()
+        + reset()
     }
 
     class Dice {
-        - valores: List[int]
-        - usados: List[bool]
+        - __valores__: list[int]
         + __init__()
-        + tirar()
-        + usar_dado(valor: int)
-        + disponibles() -> List[int]
-        + set_values(valores: List[int])
+        + tirar() -> tuple[int, int]
+        + get_values() -> tuple[int, int]
+        + set_values(valores: list[int])
+        + es_doble() -> bool
+        + reset()
     }
 
     class Move {
@@ -34,41 +65,107 @@ classDiagram
         - destino: int
         - valor_dado: int
         + __init__(origen: int, destino: int, valor_dado: int)
+        + __str__() -> str
         + __repr__() -> str
     }
 
+    class PasoMovimiento {
+        <<dataclass>>
+        + desde: Optional[int]
+        + hasta: Optional[int]
+        + dado: ValorDado
+        + captura: bool
+    }
+
+    class OpcionMovimiento {
+        <<dataclass>>
+        + secuencia: SecuenciaMovimiento
+        + hash_tablero: str
+        + puntaje: float
+    }
+
     class Board {
-        - puntos: List[List[Checker]]
-        - barra_blanca: List[Checker]
-        - barra_negra: List[Checker]
-        - fuera_blanca: List[Checker]
-        - fuera_negra: List[Checker]
+        - points: list[list[Checker]]
+        - bar: dict[str, list[Checker]]
+        - borne_off: dict[str, list[Checker]]
+        - players: list[Player]
+        - dice: Optional[Dice]
         + __init__()
-        + aplicar_movimiento(player: Player, movimientos: List[Move])
-        + enumerar_opciones_legales(player: Player, dados: Dice) -> List[List[Move]]
+        + add_player(player: Player)
+        + place_checker(checker: Checker, point: int)
+        + move_checker(checker: Checker, from_point: int, to_point: int)
+        + send_to_bar(checker: Checker)
+        + bear_off_checker(checker: Checker)
+        + get_checkers_on_point(point: int) -> list[Checker]
+        + get_bar(color: str) -> list[Checker]
+        + get_borne_off(color: str) -> list[Checker]
+        + display()
+        + reset()
         + jugador_tiene_en_barra(player: Player) -> bool
         + jugador_todo_en_home(player: Player) -> bool
         + jugador_pip_count(player: Player) -> int
         + oponente_en_cuadrante(player: Player) -> bool
+        + aplicar_movimiento(player: Player, secuencia: SecuenciaMovimiento)
+        + enumerar_opciones_legales(player: Player, dados: Sequence[ValorDado]) -> List[OpcionMovimiento]
+        - _encontrar_secuencias_recursivo(player: Player, dados_restantes: list[int], secuencia_actual: SecuenciaMovimiento, opciones: list[OpcionMovimiento])
+        - _generar_movimientos_posibles(player: Player, valor_dado: int, estado_tablero: Board) -> list[PasoMovimiento]
+        - _es_movimiento_valido(player: Player, desde: int, hasta: Optional[int], estado_tablero: Board) -> bool
+        - _es_captura(player: Player, hasta: int, estado_tablero: Board) -> bool
+        - _calcular_hash_secuencia(player: Player, secuencia: SecuenciaMovimiento) -> str
+        - _calcular_hash_tablero() -> str
+        - _aplicar_paso_movimiento(player: Player, paso: PasoMovimiento)
+        - _deshacer_paso_movimiento(player: Player, paso: PasoMovimiento)
     }
 
     class BackgammonGame {
-        - board: Board
-        - jugadores: List[Player]
-        - dados: Dice
-        - turno: int
+        - __board__: Board
+        - __jugadores__: list[Player]
+        - __dados__: Dice
+        - __turno__: int
         + __init__(jugador1: Player, jugador2: Player)
         + iniciar_partida()
+        + get_board() -> Board
+        + get_jugadores() -> list[Player]
+        + get_dados() -> Dice
+        + get_turno() -> int
+        + get_jugador_actual() -> Player
         + siguiente_turno()
-        + aplicar_movimiento(movimientos: List[Move])
+        + aplicar_movimiento(movimientos: SecuenciaMovimiento)
         + obtener_ganador() -> Optional[Player]
+        + lanzar_dados() -> tuple[int, int]
     }
 
-    Player "1" o-- "*" Checker : posee
+    class TableroFachada {
+        <<Protocol>>
+        + jugador_tiene_en_barra(jugador: Player) -> bool
+        + jugador_todo_en_home(jugador: Player) -> bool
+        + oponente_en_cuadrante(jugador: Player) -> bool
+        + jugador_pip_count(jugador: Player) -> int
+        + enumerar_opciones_legales(jugador: Player, dados: Sequence[ValorDado]) -> List[OpcionMovimiento]
+        + aplicar_movimiento(jugador: Player, secuencia: SecuenciaMovimiento)
+    }
+
+    class Politica {
+        <<Protocol>>
+        + elegir(opciones: List[OpcionMovimiento]) -> Optional[SecuenciaMovimiento]
+    }
+
+    class PoliticaNula {
+        + elegir(opciones: List[OpcionMovimiento]) -> Optional[SecuenciaMovimiento]
+    }
+
+    Player "1" *-- "*" Checker : posee
+    Player "1" o-- "1" Politica : usa
     Board "1" o-- "*" Checker : contiene
-    Board "1" o-- "2" Player : referencia
-    BackgammonGame "1" o-- "1" Board : usa
+    Board "1" o-- "0..2" Player : referencia
+    BackgammonGame "1" *-- "1" Board : usa
     BackgammonGame "1" o-- "2" Player : gestiona
-    BackgammonGame "1" o-- "1" Dice : usa
-    Board "1" o-- "*" Move : aplica
-    BackgammonGame "1" o-- "*" Move : aplica
+    BackgammonGame "1" *-- "1" Dice : usa
+    Board ..> PasoMovimiento : aplica
+    Board ..> OpcionMovimiento : genera
+    Player ..> TableroFachada : depende
+    Player ..> PasoMovimiento : usa
+    Player ..> OpcionMovimiento : usa
+    PoliticaNula ..|> Politica : implementa
+    OpcionMovimiento "1" *-- "*" PasoMovimiento : contiene
+    BackgammonGame ..> Move : aplica

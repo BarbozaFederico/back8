@@ -1,38 +1,29 @@
 # Automated Reports
 ## Coverage Report
 ```text
-.................F
-=================================== FAILURES ===================================
-____________ test_aplicar_movimiento_and_enumerar_opciones_legales _____________
+........................................................................ [ 77%]
+.....................                                                    [100%]
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.10.18-final-0 _______________
 
-    def test_aplicar_movimiento_and_enumerar_opciones_legales():
-        board = Board()
-        p = DummyPlayer("blancas")
-        board.add_player(p)
-        # Coloca todas las fichas en el home area para permitir bear-off
-        # Coloca una ficha en 18 y el resto en otras posiciones home
-        checkers = p.get_checkers()
-        board.place_checker(checkers[0], 18)  # Esta es la que vamos a mover
-        # Coloca las otras fichas en posiciones home para permitir bear-off
-        for i, c in enumerate(checkers[1:]):
-            board.place_checker(c, 19 + (i % 5))  # Distribuye en posiciones 19-23
-    
->       opciones = board.enumerar_opciones_legales(p, [6])
-E       AttributeError: 'Board' object has no attribute 'enumerar_opciones_legales'
-
-tests/test_board.py:212: AttributeError
-=========================== short test summary info ============================
-FAILED tests/test_board.py::test_aplicar_movimiento_and_enumerar_opciones_legales - AttributeError: 'Board' object has no attribute 'enumerar_opciones_legales'
-!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
-1 failed, 17 passed in 0.96s
+Name                            Stmts   Miss Branch BrPart  Cover   Missing
+---------------------------------------------------------------------------
+backgammon/core/backgammon.py      55      0     24      1    99%   110->117
+backgammon/core/board.py          338     29    198     33    87%   316->315, 318, 319->315, 348, 352, 358, 364, 403-404, 409->408, 421->429, 454-455, 469->464, 503-504, 530->537, 545-548, 558-567, 579, 624, 635, 663, 730, 755->754, 771->782, 775->782, 777->782, 778->777, 784, 788-789, 797->exit, 869
+backgammon/core/checker.py         44      0      0      0   100%
+backgammon/core/dice.py            13      0      0      0   100%
+backgammon/core/move.py            18      0      4      0   100%
+backgammon/core/player.py          80      0      2      0   100%
+---------------------------------------------------------------------------
+TOTAL                             548     29    228     34    91%
+Coverage XML written to file cobertura.xml
+93 passed in 0.59s
 
 ```
 ## Pylint Report
 ```text
 ************* Module cli.console
 backgammon/cli/console.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-backgammon/cli/console.py:1:0: E0401: Unable to import 'backgammon.core.backgammon' (import-error)
-backgammon/cli/console.py:2:0: E0401: Unable to import 'backgammon.core.player' (import-error)
 backgammon/cli/console.py:115:16: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
 backgammon/cli/console.py:98:26: W0613: Unused argument 'player' (unused-argument)
 backgammon/cli/console.py:2:0: W0611: Unused OpcionMovimiento imported from backgammon.core.player (unused-import)
@@ -40,27 +31,27 @@ backgammon/cli/console.py:2:0: W0611: Unused SecuenciaMovimiento imported from b
 ************* Module core.backgammon
 backgammon/core/backgammon.py:180:0: C0301: Line too long (107/100) (line-too-long)
 backgammon/core/backgammon.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-backgammon/core/backgammon.py:2:0: E0401: Unable to import 'backgammon.core.player' (import-error)
-backgammon/core/backgammon.py:3:0: E0401: Unable to import 'backgammon.core.checker' (import-error)
-backgammon/core/backgammon.py:4:0: E0401: Unable to import 'backgammon.core.dice' (import-error)
-backgammon/core/backgammon.py:5:0: E0401: Unable to import 'backgammon.core.board' (import-error)
 backgammon/core/backgammon.py:93:16: W0212: Access to a protected member _player of a client class (protected-access)
 ************* Module core.board
-backgammon/core/board.py:491:0: C0325: Unnecessary parens after '=' keyword (superfluous-parens)
-backgammon/core/board.py:68:8: C0104: Disallowed name "bar" (disallowed-name)
-backgammon/core/board.py:215:8: C0206: Consider iterating with .items() (consider-using-dict-items)
-backgammon/core/board.py:218:8: C0206: Consider iterating with .items() (consider-using-dict-items)
-backgammon/core/board.py:275:16: R1705: Unnecessary "elif" after "return", remove the leading "el" from "elif" (no-else-return)
-backgammon/core/board.py:309:12: R1724: Unnecessary "elif" after "continue", remove the leading "el" from "elif" (no-else-continue)
-backgammon/core/board.py:339:8: E0401: Unable to import 'backgammon.core.player' (import-error)
-backgammon/core/board.py:339:8: C0415: Import outside toplevel (backgammon.core.player.SecuenciaMovimiento, backgammon.core.player.PasoMovimiento) (import-outside-toplevel)
-backgammon/core/board.py:399:4: R0914: Too many local variables (24/15) (too-many-locals)
-backgammon/core/board.py:406:8: E0401: Unable to import 'backgammon.core.player' (import-error)
-backgammon/core/board.py:406:8: C0415: Import outside toplevel (backgammon.core.player.PasoMovimiento) (import-outside-toplevel)
-backgammon/core/board.py:477:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
-backgammon/core/board.py:399:4: R0912: Too many branches (25/12) (too-many-branches)
-backgammon/core/board.py:399:4: R0915: Too many statements (55/50) (too-many-statements)
-backgammon/core/board.py:544:4: R0911: Too many return statements (7/6) (too-many-return-statements)
+backgammon/core/board.py:528:0: C0325: Unnecessary parens after '=' keyword (superfluous-parens)
+backgammon/core/board.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+backgammon/core/board.py:15:0: C0413: Import "from backgammon.core.player import OpcionMovimiento" should be placed at the top of the module (wrong-import-position)
+backgammon/core/board.py:70:8: C0104: Disallowed name "bar" (disallowed-name)
+backgammon/core/board.py:256:8: C0206: Consider iterating with .items() (consider-using-dict-items)
+backgammon/core/board.py:259:8: C0206: Consider iterating with .items() (consider-using-dict-items)
+backgammon/core/board.py:199:4: R0912: Too many branches (13/12) (too-many-branches)
+backgammon/core/board.py:317:16: R1705: Unnecessary "elif" after "return", remove the leading "el" from "elif" (no-else-return)
+backgammon/core/board.py:351:12: R1724: Unnecessary "elif" after "continue", remove the leading "el" from "elif" (no-else-continue)
+backgammon/core/board.py:436:4: R0914: Too many local variables (24/15) (too-many-locals)
+backgammon/core/board.py:443:8: C0415: Import outside toplevel (backgammon.core.player.PasoMovimiento) (import-outside-toplevel)
+backgammon/core/board.py:514:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+backgammon/core/board.py:436:4: R0912: Too many branches (25/12) (too-many-branches)
+backgammon/core/board.py:436:4: R0915: Too many statements (55/50) (too-many-statements)
+backgammon/core/board.py:581:4: R0911: Too many return statements (7/6) (too-many-return-statements)
+backgammon/core/board.py:726:8: W0404: Reimport 'OpcionMovimiento' (imported line 15) (reimported)
+backgammon/core/board.py:726:8: C0415: Import outside toplevel (backgammon.core.player.OpcionMovimiento, backgammon.core.player.ValorDado) (import-outside-toplevel)
+backgammon/core/board.py:814:8: W0404: Reimport 'OpcionMovimiento' (imported line 15) (reimported)
+backgammon/core/board.py:814:8: C0415: Import outside toplevel (backgammon.core.player.OpcionMovimiento) (import-outside-toplevel)
 ************* Module core.dice
 backgammon/core/dice.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 ************* Module core.move
@@ -93,8 +84,6 @@ backgammon/pygame_ui/ui.py:991:0: C0301: Line too long (106/100) (line-too-long)
 backgammon/pygame_ui/ui.py:1076:0: C0301: Line too long (133/100) (line-too-long)
 backgammon/pygame_ui/ui.py:1:0: C0302: Too many lines in module (1098/1000) (too-many-lines)
 backgammon/pygame_ui/ui.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-backgammon/pygame_ui/ui.py:5:0: E0401: Unable to import 'backgammon.core.backgammon' (import-error)
-backgammon/pygame_ui/ui.py:6:0: E0401: Unable to import 'backgammon.core.player' (import-error)
 backgammon/pygame_ui/ui.py:50:0: R0902: Too many instance attributes (27/7) (too-many-instance-attributes)
 backgammon/pygame_ui/ui.py:325:4: R0914: Too many local variables (32/15) (too-many-locals)
 backgammon/pygame_ui/ui.py:325:4: R0912: Too many branches (15/12) (too-many-branches)
@@ -113,207 +102,9 @@ backgammon/pygame_ui/ui.py:3:0: C0411: standard import "time" should be placed b
 backgammon/pygame_ui/ui.py:4:0: C0411: standard import "random" should be placed before third party import "pygame" (wrong-import-order)
 backgammon/pygame_ui/ui.py:6:0: W0611: Unused PasoMovimiento imported from backgammon.core.player (unused-import)
 backgammon/pygame_ui/ui.py:6:0: W0611: Unused SecuenciaMovimiento imported from backgammon.core.player (unused-import)
-************* Module test_backgammon
-tests/test_backgammon.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-tests/test_backgammon.py:2:0: E0401: Unable to import 'backgammon.core.backgammon' (import-error)
-tests/test_backgammon.py:5:0: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_backgammon.py:1:0: W0611: Unused import pytest (unused-import)
-************* Module test_board
-tests/test_board.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-tests/test_board.py:2:0: E0401: Unable to import 'backgammon.core.board' (import-error)
-tests/test_board.py:3:0: E0401: Unable to import 'backgammon.core.checker' (import-error)
-tests/test_board.py:18:4: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:21:4: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:24:4: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:27:4: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:30:4: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:33:4: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:40:0: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:160:0: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:169:0: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:188:0: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:200:0: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:221:0: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:231:11: W0212: Access to a protected member _es_movimiento_valido of a client class (protected-access)
-tests/test_board.py:232:11: W0212: Access to a protected member _es_captura of a client class (protected-access)
-tests/test_board.py:236:11: W0212: Access to a protected member _es_movimiento_valido of a client class (protected-access)
-tests/test_board.py:272:4: W0621: Redefining name 'DummyPlayer' from outer scope (line 6) (redefined-outer-name)
-tests/test_board.py:270:4: E0401: Unable to import 'backgammon.core.player' (import-error)
-tests/test_board.py:270:4: C0415: Import outside toplevel (backgammon.core.player.PasoMovimiento) (import-outside-toplevel)
-tests/test_board.py:272:4: C0115: Missing class docstring (missing-class-docstring)
-tests/test_board.py:273:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:272:4: R0903: Too few public methods (1/2) (too-few-public-methods)
-tests/test_board.py:278:8: W0212: Access to a protected member _aplicar_paso_movimiento of a client class (protected-access)
-tests/test_board.py:286:4: W0621: Redefining name 'DummyPlayer' from outer scope (line 6) (redefined-outer-name)
-tests/test_board.py:284:4: E0401: Unable to import 'backgammon.core.player' (import-error)
-tests/test_board.py:284:4: C0415: Import outside toplevel (backgammon.core.player.PasoMovimiento) (import-outside-toplevel)
-tests/test_board.py:286:4: C0115: Missing class docstring (missing-class-docstring)
-tests/test_board.py:287:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:286:4: R0903: Too few public methods (1/2) (too-few-public-methods)
-tests/test_board.py:295:4: W0212: Access to a protected member _aplicar_paso_movimiento of a client class (protected-access)
-tests/test_board.py:304:4: W0621: Redefining name 'DummyPlayer' from outer scope (line 6) (redefined-outer-name)
-tests/test_board.py:304:4: C0115: Missing class docstring (missing-class-docstring)
-tests/test_board.py:305:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:308:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:311:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:314:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:317:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:320:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:320:33: W0613: Unused argument 'b' (unused-argument)
-tests/test_board.py:331:4: W0621: Redefining name 'DummyPlayer' from outer scope (line 6) (redefined-outer-name)
-tests/test_board.py:331:4: C0115: Missing class docstring (missing-class-docstring)
-tests/test_board.py:332:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:335:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:338:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:341:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:344:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:347:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:347:33: W0613: Unused argument 'b' (unused-argument)
-tests/test_board.py:350:13: W0212: Access to a protected member _generar_secuencias_movimiento of a client class (protected-access)
-tests/test_board.py:359:4: W0621: Redefining name 'DummyPlayer' from outer scope (line 6) (redefined-outer-name)
-tests/test_board.py:357:4: E0401: Unable to import 'backgammon.core.player' (import-error)
-tests/test_board.py:357:4: C0415: Import outside toplevel (backgammon.core.player.PasoMovimiento) (import-outside-toplevel)
-tests/test_board.py:359:4: C0115: Missing class docstring (missing-class-docstring)
-tests/test_board.py:360:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:363:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:366:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:369:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:372:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:375:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:375:33: W0613: Unused argument 'b' (unused-argument)
-tests/test_board.py:381:12: W0212: Access to a protected member _generar_movimientos_posibles of a client class (protected-access)
-tests/test_board.py:357:4: W0611: Unused PasoMovimiento imported from backgammon.core.player (unused-import)
-tests/test_board.py:389:4: W0621: Redefining name 'DummyPlayer' from outer scope (line 6) (redefined-outer-name)
-tests/test_board.py:389:4: C0115: Missing class docstring (missing-class-docstring)
-tests/test_board.py:390:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:393:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:393:33: W0613: Unused argument 'b' (unused-argument)
-tests/test_board.py:396:11: W0212: Access to a protected member _es_movimiento_valido of a client class (protected-access)
-tests/test_board.py:403:4: W0621: Redefining name 'DummyPlayer' from outer scope (line 6) (redefined-outer-name)
-tests/test_board.py:403:4: C0115: Missing class docstring (missing-class-docstring)
-tests/test_board.py:404:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:407:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:407:33: W0613: Unused argument 'b' (unused-argument)
-tests/test_board.py:410:11: W0212: Access to a protected member _es_movimiento_valido of a client class (protected-access)
-tests/test_board.py:411:11: W0212: Access to a protected member _es_movimiento_valido of a client class (protected-access)
-tests/test_board.py:418:4: W0621: Redefining name 'DummyPlayer' from outer scope (line 6) (redefined-outer-name)
-tests/test_board.py:418:4: C0115: Missing class docstring (missing-class-docstring)
-tests/test_board.py:419:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:418:4: R0903: Too few public methods (1/2) (too-few-public-methods)
-tests/test_board.py:423:11: W0212: Access to a protected member _es_captura of a client class (protected-access)
-tests/test_board.py:427:11: W0212: Access to a protected member _es_captura of a client class (protected-access)
-tests/test_board.py:430:11: W0212: Access to a protected member _es_captura of a client class (protected-access)
-tests/test_board.py:437:4: W0621: Redefining name 'DummyPlayer' from outer scope (line 6) (redefined-outer-name)
-tests/test_board.py:437:4: C0115: Missing class docstring (missing-class-docstring)
-tests/test_board.py:438:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:437:4: R0903: Too few public methods (1/2) (too-few-public-methods)
-tests/test_board.py:441:8: W0212: Access to a protected member _calcular_hash_secuencia of a client class (protected-access)
-tests/test_board.py:520:4: W0621: Redefining name 'DummyPlayer' from outer scope (line 6) (redefined-outer-name)
-tests/test_board.py:520:4: C0115: Missing class docstring (missing-class-docstring)
-tests/test_board.py:520:4: R0903: Too few public methods (0/2) (too-few-public-methods)
-tests/test_board.py:531:4: W0621: Redefining name 'DummyPlayer' from outer scope (line 6) (redefined-outer-name)
-tests/test_board.py:531:4: C0115: Missing class docstring (missing-class-docstring)
-tests/test_board.py:532:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:535:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:538:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:541:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:544:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:547:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:547:33: W0613: Unused argument 'b' (unused-argument)
-tests/test_board.py:558:4: W0621: Redefining name 'DummyPlayer' from outer scope (line 6) (redefined-outer-name)
-tests/test_board.py:558:4: C0115: Missing class docstring (missing-class-docstring)
-tests/test_board.py:559:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:562:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:565:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:568:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:571:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:574:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:574:33: W0613: Unused argument 'b' (unused-argument)
-tests/test_board.py:577:13: W0212: Access to a protected member _generar_secuencias_movimiento of a client class (protected-access)
-tests/test_board.py:585:4: W0621: Redefining name 'DummyPlayer' from outer scope (line 6) (redefined-outer-name)
-tests/test_board.py:585:4: C0115: Missing class docstring (missing-class-docstring)
-tests/test_board.py:586:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:589:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:592:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:595:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:598:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:601:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:601:33: W0613: Unused argument 'b' (unused-argument)
-tests/test_board.py:604:12: W0212: Access to a protected member _generar_movimientos_posibles of a client class (protected-access)
-tests/test_board.py:612:4: W0621: Redefining name 'DummyPlayer' from outer scope (line 6) (redefined-outer-name)
-tests/test_board.py:612:4: C0115: Missing class docstring (missing-class-docstring)
-tests/test_board.py:613:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:616:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:616:33: W0613: Unused argument 'b' (unused-argument)
-tests/test_board.py:620:11: W0212: Access to a protected member _es_movimiento_valido of a client class (protected-access)
-tests/test_board.py:627:4: W0621: Redefining name 'DummyPlayer' from outer scope (line 6) (redefined-outer-name)
-tests/test_board.py:627:4: C0115: Missing class docstring (missing-class-docstring)
-tests/test_board.py:628:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_board.py:627:4: R0903: Too few public methods (1/2) (too-few-public-methods)
-tests/test_board.py:631:11: W0212: Access to a protected member _es_captura of a client class (protected-access)
-tests/test_board.py:637:4: E0401: Unable to import 'backgammon.core.player' (import-error)
-tests/test_board.py:637:4: C0415: Import outside toplevel (backgammon.core.player.PasoMovimiento) (import-outside-toplevel)
-tests/test_board.py:640:8: W0212: Access to a protected member _calcular_hash_secuencia of a client class (protected-access)
-tests/test_board.py:668:24: W0212: Access to a protected member _generar_movimientos_posibles of a client class (protected-access)
-tests/test_board.py:665:4: W0612: Unused variable 'dados' (unused-variable)
-tests/test_board.py:698:24: W0212: Access to a protected member _generar_movimientos_posibles of a client class (protected-access)
-tests/test_board.py:729:12: W0212: Access to a protected member _generar_movimientos_posibles of a client class (protected-access)
-tests/test_board.py:758:12: W0212: Access to a protected member _generar_movimientos_posibles of a client class (protected-access)
-************* Module test_checker
-tests/test_checker.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-tests/test_checker.py:1:0: E0401: Unable to import 'backgammon.core.checker' (import-error)
-tests/test_checker.py:62:4: C0115: Missing class docstring (missing-class-docstring)
-tests/test_checker.py:62:4: R0903: Too few public methods (0/2) (too-few-public-methods)
-************* Module test_dice
-tests/test_dice.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-tests/test_dice.py:1:0: E0401: Unable to import 'backgammon.core.board' (import-error)
-tests/test_dice.py:2:0: E0401: Unable to import 'backgammon.core.dice' (import-error)
-tests/test_dice.py:5:0: C0116: Missing function or method docstring (missing-function-docstring)
-************* Module test_move
-tests/test_move.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-tests/test_move.py:1:0: E0401: Unable to import 'backgammon.core.move' (import-error)
-tests/test_move.py:50:4: W0621: Redefining name 'Move' from outer scope (line 1) (redefined-outer-name)
-tests/test_move.py:50:4: E0401: Unable to import 'backgammon.core.move' (import-error)
-tests/test_move.py:50:4: W0404: Reimport 'Move' (imported line 1) (reimported)
-tests/test_move.py:50:4: C0415: Import outside toplevel (backgammon.core.move.Move) (import-outside-toplevel)
-tests/test_move.py:53:11: C2801: Unnecessarily calls dunder method __eq__. Use == operator. (unnecessary-dunder-call)
-************* Module test_player
-tests/test_player.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-tests/test_player.py:4:0: E0401: Unable to import 'backgammon.core.player' (import-error)
-tests/test_player.py:10:0: E0401: Unable to import 'backgammon.core.checker' (import-error)
-tests/test_player.py:17:8: C0104: Disallowed name "bar" (disallowed-name)
-tests/test_player.py:23:4: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_player.py:26:4: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_player.py:29:4: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_player.py:32:4: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_player.py:35:4: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_player.py:38:4: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_player.py:42:0: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_player.py:150:4: C0115: Missing class docstring (missing-class-docstring)
-tests/test_player.py:203:4: C0115: Missing class docstring (missing-class-docstring)
-tests/test_player.py:204:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_player.py:203:4: R0903: Too few public methods (1/2) (too-few-public-methods)
-tests/test_player.py:224:4: C0115: Missing class docstring (missing-class-docstring)
-tests/test_player.py:225:8: C0116: Missing function or method docstring (missing-function-docstring)
-tests/test_player.py:224:4: R0903: Too few public methods (1/2) (too-few-public-methods)
-************* Module test_ui
-tests/test_ui.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-tests/test_ui.py:8:0: E0401: Unable to import 'backgammon.pygame_ui.ui' (import-error)
-tests/test_ui.py:9:0: E0401: Unable to import 'backgammon.core.backgammon' (import-error)
-tests/test_ui.py:7:0: C0411: standard import "unittest.mock.Mock" should be placed before third party import "pytest" (wrong-import-order)
-tests/test_ui.py:1:0: R0801: Similar lines in 2 files
-==cli.console:[47:54]
-==test_backgammon:[9:16]
-            "color": "blancas",
-            "direccion": 1,
-            "home_points": [18, 19, 20, 21, 22, 23],
-            "entry_point": 0,
-        },
-        {
-            "id": "P2", (duplicate-code)
 
 -----------------------------------
-Your code has been rated at 8.00/10
+Your code has been rated at 9.30/10
 
 
 ```

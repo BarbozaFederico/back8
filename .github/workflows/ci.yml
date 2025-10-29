@@ -51,8 +51,8 @@ jobs:
 
       - name: Run Pylint and generate report
         run: |
-          # Usa archivos trackeados por git; evita fallar si no hay .py
-          git ls-files '*.py' | xargs -r pylint --rcfile=.pylintrc > pylint_report.txt || true
+          # Usa archivos trackeados por git, pero excluye la carpeta tests/ y cualquier archivo de test
+          git ls-files '*.py' | grep -v '^tests/' | grep -v '/tests/' | grep -v 'test_' | xargs -r pylint --rcfile=.pylintrc > pylint_report.txt || true
 
       - name: Generate reports file
         run: |

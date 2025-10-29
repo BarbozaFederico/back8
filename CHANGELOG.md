@@ -5,7 +5,80 @@ Todas las modificaciones notables de este proyecto serán documentadas en este a
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/),
 y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
-## [1.6.5] - 2025-10-29
+## [1.6.8] - 29/10/2025
+
+### Fixed
+
+- Se resolvieron todos los tests que fallaban y se incrementó la cobertura total de pruebas al 91%.
+- Se corrigió un bug en el método `jugador_pip_count` de `backgammon/core/board.py`.
+
+### Added
+
+- Se añadieron nuevos tests unitarios en `tests/test_dice.py`, `tests/test_backgammon.py` y `tests/test_board.py` para aumentar la cobertura.
+- Se implementó el mock del módulo `pygame` en `tests/test_ui.py` para resolver errores de importación.
+
+### Changed
+
+- Se corrigieron las aserciones en `tests/test_backgammon.py` para reflejar correctamente los resultados esperados.
+
+---
+
+**Referencias:**
+
+- [tests_backgammon](./tests/test_backgammon.py)
+- [tests_dice](./tests/test_dice.py)
+- [tests_board](./tests/test_board.py)
+- [tests_board](./backgammon/core/board.py)
+
+## [1.6.7] - 29/10/2025
+
+### Changed
+
+- refactor: Se refactorizó el método `display` en `backgammon/core/board.py` para renderizar una representación en arte ASCII del tablero de juego. Esto mejora significativamente la experiencia de usuario en la interfaz de línea de comandos, proporcionando un diseño claro, intuitivo y visualmente atractivo.
+
+#### Mejoras incluidas:
+- Diseño completo del tablero con numeración de puntos.
+- Caracteres 'W' y 'B' para representar las fichas blancas y negras.
+- Área designada para la barra.
+- Conteo claro de fichas en la barra y fichas que han salido (bear-off).
+
+### Fixed
+
+- Se actualizaron las pruebas unitarias correspondientes al método `display` para validar el nuevo formato ASCII, asegurando que los cambios estén cubiertos y que el conjunto de tests siga siendo robusto.
+- La lógica central del juego y la interfaz gráfica Pygame no se ven afectadas por esta mejora visual.
+
+---
+
+**Referencias:**
+
+- [tests_board](./tests/test_board.py)
+- [tests](./tests)
+
+## [1.6.6] - 29/10/2025
+
+### Added
+
+- Se implementó el método `enumerar_opciones_legales` en la clase `Board` para generar correctamente todos los movimientos legales posibles según las reglas del juego.
+- Se restauró y corrigió una prueba unitaria que había sido eliminada previamente, asegurando una cobertura de tests adecuada.
+
+### Changed
+
+- Se refactorizó la lógica de generación de movimientos en `Board` para utilizar un algoritmo de backtracking más eficiente en lugar de `deepcopy`, mejorando significativamente el rendimiento.
+- Se realizó una limpieza general del código: se movieron los imports al inicio de los archivos y se eliminaron fragmentos de código no utilizados.
+
+### Fixed
+
+- Se verificó que tanto la interfaz de línea de comandos (CLI) como la interfaz gráfica (Pygame UI) funcionen correctamente tras los cambios.
+
+---
+
+**Referencias:**
+
+- [tests_baord](./backgammon/core/board.py)
+- [tests](./tests)
+- CLI y Pygame UI
+
+## [1.6.5] - 29/10/2025
 
 ### Added
 
@@ -23,7 +96,7 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
 - JUSTIFICACION.md
 
-## [1.6.4] - 2025-10-29
+## [1.6.4] - 29/10/2025
 
 ### Added
 
@@ -36,7 +109,7 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
 - plantaUML.mermaid
 
-## [1.6.3] - 2025-10-29
+## [1.6.3] - 29/10/2025
 
 ### Added
 
@@ -48,9 +121,9 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
 **Referencias:**
 
-- backgammon/pygame_ui/ui.py
+- [pygame_ui](./backgammon/pygame_ui/ui.py)
 
-## [1.6.2] - 2025-10-28
+## [1.6.2] - 28/10/2025
 
 ### Changed
 
@@ -61,9 +134,9 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
 **Referencias:**
 
-- backgammon/pygame_ui/ui.py
+- [pygame_ui](./backgammon/pygame_ui/ui.py)
 
-## [1.6.1] - 2025-10-28
+## [1.6.1] - 28/10/2025
 
 ### Fixed
 
@@ -79,9 +152,9 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
 **Referencias:**
 
-- backgammon/pygame_ui/ui.py
+- [pygame_ui](./backgammon/pygame_ui/ui.py)
 
-## [1.6.0] - 2025-10-27
+## [1.6.0] - 27/10/2025
 
 ### Added
 
@@ -101,10 +174,9 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
 **Referencias:**
 
-- backgammon/pygame_ui/ui.py
-- assets/styles.md (documentación de paleta y tokens de estilo)
+- [pygame_ui](./backgammon/pygame_ui/ui.py)
 
-## [1.5.0] 27/10/2025
+## [1.5.0] - 27/10/2025
 
 ### Added
 
@@ -120,7 +192,7 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
 ---
 
-## [1.4.0] 23/10/2025
+## [1.4.0] - 23/10/2025
 
 ### Refactor
 
@@ -143,7 +215,7 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
 - [test_board](./tests/test_board.py)
 
-## [1.3.1] 23/10/2025
+## [1.3.1] - 23/10/2025
 
 ### Added
 
@@ -161,7 +233,7 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
 - [test_board](./tests/test_board.py)
 
-## [1.3.0] 23/10/2025
+## [1.3.0] - 23/10/2025
 
 ### Added
 
@@ -178,7 +250,7 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
 - [test_ui](./tests/test_ui.py)
 
-## [1.2.0] 22/10/2025
+## [1.2.0] - 22/10/2025
 
 ### Added
 
@@ -199,7 +271,7 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
 - [test_ui](./tests/test_ui.py)
 
-## [1.1.1] 21/10/2025
+## [1.1.1] - 21/10/2025
 
 ### Fixed
 
@@ -210,7 +282,7 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 - Añadido el método `set_values` a la clase `Dice` para facilitar escenarios de prueba con valores de dados predecibles.
 - Corrección de prueba existente en `tests/test_checker.py` para asegurar que todo el conjunto de pruebas pase.
 
-## [1.1.0] 19/09/2025
+## [1.1.0] - 19/09/2025
 
 ### Added
 
@@ -267,7 +339,7 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
 - [prompts_testing](./prompts/prompts-testing.md)
 
-# [1.0.0] 18/09/2025
+# [1.0.0] - 18/09/2025
 
 ### Added
 
@@ -325,7 +397,7 @@ La implementación es funcional y estable. A continuación, un resumen de lo imp
 
 ---
 
-## [0.7.0] 17/09/2025
+## [0.7.0] - 17/09/2025
 
 ### Added
 
@@ -364,7 +436,7 @@ La implementación es funcional y estable. A continuación, un resumen de lo imp
 
 - [prompts_testing](./prompts/prompts-testing.md)
 
-## [0.6.0] 17/09/2025
+## [0.6.0] - 17/09/2025
 
 ### Added
 
@@ -389,14 +461,14 @@ La implementación es funcional y estable. A continuación, un resumen de lo imp
 
 - [test_player](./tests/test_player.py)
 
-## [0.5.0] 16/09/2025
+## [0.5.0] - 16/09/2025
 
 ### Added
 
 - Creacion de clase [player](./backgammon/core/player.py)
 - Actualizacion del [copilot-intructions](./.github/copilot-instructions.md)
 
-## [0.4.0] 16/09/2025
+## [0.4.0] - 16/09/2025
 
 ### added
 
@@ -415,21 +487,21 @@ La implementación es funcional y estable. A continuación, un resumen de lo imp
 
 - se corrigio errores de tests creando [conftest.py](./tests/conftest.py) y [pytest.ini](./pytest.ini)
 
-## [0.3.0] 10-08-2025
+## [0.3.0] - 10/08/2025
 
 ### Added+
 
 - logica basica de la clase [dice](./backgammon/core/dice.py)
 - Documentacion de funciones de la clase [dice](./backgammon/core/dice.py)
 
-## [0.2.0] 08-09/2025
+## [0.2.0] - 08/09/2025
 
 ### Added
 
 - Creacion de logica basica de tablero
 - Actualizacion de prompts a traves de [copilot-instructions](./.github/copilot-instructions.md)
 
-## [0.1.0] 07-08-2025
+## [0.1.0] - 07/08/2025
 
 ### Added
 

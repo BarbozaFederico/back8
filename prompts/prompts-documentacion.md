@@ -194,7 +194,7 @@ Modelo / herramienta usada: GitHub Copilot (octubre 2025)
 
 Prompt exacto:
 Agrega "changelog" los siguientes cambios con su respectivo versionado semantico y con las reglas de "keep a changelog"
-Plantea este prompt en "prompt de documentacion"
+Plantea este prompt en "prompts de documentacion"
 En el changelog escribe: "Cambios clave:
 
 - Se ha añadido un estado de fin de juego en la clase `PygameUI` para detectar y gestionar la condición de victoria.
@@ -225,7 +225,7 @@ Referencia a los archivos finales que incorporaron contenido generado por IA:
 Modelo / herramienta usada: GitHub Copilot (octubre 2025)
 
 Prompt exacto:
-Plantea en CHANGELOG las siguientes acciones realizadas en este commit con su respectivo versionado semantico y con las reglas de "keep a changelog": 
+Plante en CHANGELOG las siguientes acciones realizadas en este commit con su respectivo versionado semantico y con las reglas de "keep a changelog": 
 
 - Se ha añadido un método `oponente_en_cuadrante` a la clase `Board` para detectar la presencia de fichas oponentes.
 - Se ha actualizado el método `puede_bear_off` en la clase `Player` para usar esta nueva comprobación, bloqueando el bear-off si es necesario.
@@ -384,43 +384,116 @@ Referencia a los archivos finales que incorporaron contenido generado por IA:
 
 ## Prompt 2025-10-29
 
-**Modelo/herramienta usada:** GitHub Copilot
+**Modelo / herramienta usada:** GitHub Copilot
 
 **Prompt exacto:**
-Añade los siguientes cambios a changelog en español, siguiendo el versionado semántico y "keep a changelog" y ese prompt plantéalo en prompt de documentación:
+Plante los siguientes cambios en español en changelog siguiendo versionado semantico y "keep a changelog" ademas de plantear este prompt en "prompts de documentacion"
+Texto:
+Refactors the `display` method in `backgammon/core/board.py` to render an ASCII art representation of the game board. This significantly enhances the user experience in the command-line interface by providing a clear, intuitive, and visually appealing layout.
 
-Documentos: Agregar docstrings completos a la clase PygameUI y sus métodos
+The new design includes:
+- A full board layout with numbered points.
+- 'W' and 'B' characters to represent white and black checkers.
+- A designated area for the bar.
+- Clear counts for checkers on the bar and those that have been borne off.
 
-Agrega docstrings detallados a la clase PygameUI y a todos sus métodos en backgammon/pygame_ui/ui.py. La documentación sigue el formato solicitado por el usuario, incluyendo secciones de atributos y métodos, para mejorar la claridad y mantenibilidad del código.
+The corresponding unit tests for the `display` method have been updated to validate the new ASCII format, ensuring that the changes are covered and the test suite remains robust. The core game logic and the Pygame UI are unaffected by this visual enhancement.
 
 **Instrucciones del sistema:**  
-
-- Siempre sigue los principios SOLID  
-- Incluir docstrings y comentarios claros en el código generado  
-- Proporciona una explicación detallada para cada prompt y documenta tanto el prompt como la respuesta generada dentro de los archivos prompts/prompts-desarrollo.md, prompts/prompts-documentacion.md o prompts/prompts-testing.md. Usa únicamente estos archivos para la documentación de prompts.  
-- Por cada prompt debe quedar registrado: Modelo / herramienta usada (nombre y versión si corresponde), El texto exacto del prompt (sin reescrituras subjetivas), Instrucciones del sistema (si las hubo), Respuesta/resultado completo devuelto por la IA, Indicar si la salida fue usada sin cambios, usada con modificaciones (mostrar las modificaciones) o descartada, Referencia a los archivos finales que incorporaron contenido generado por IA (ej:core/board.py)
+Siempre sigue los principios SOLID  
+Incluir docstrings y comentarios claros en el código generado  
+Proporciona una explicación detallada para cada prompt y documenta tanto el prompt como la respuesta generada dentro de los archivos prompts/prompts-desarrollo.md, prompts/prompts-documentacion.md o prompts/prompts-testing.md. Usa únicamente estos archivos para la documentación de prompts.  
+Por cada prompt debe quedar registrado: Modelo / herramienta usada (nombre y versión si corresponde), El texto exacto del prompt (sin reescrituras subjetivas), Instrucciones del sistema (si las hubo), Respuesta/resultado completo devuelto por la IA, Indicar si la salida fue usada sin cambios, usada con modificaciones (mostrar las modificaciones) o descartada, Referencia a los archivos finales que incorporaron contenido generado por IA (ej:core/board.py)
 
 **Respuesta/resultado completo devuelto por la IA:**
 
 Se añadió la siguiente entrada al archivo CHANGELOG.md:
 
-## [1.6.3] - 2025-10-29
+## [1.6.7] - 2025-10-29
 
-### Añadido
+### Changed
 
-- Documentos: Se añadieron docstrings completos y detallados a la clase `PygameUI` y a todos sus métodos en `backgammon/pygame_ui/ui.py`.
-  - La documentación sigue el formato solicitado por el usuario, incluyendo secciones de atributos y métodos.
-  - Mejora la claridad y mantenibilidad del código.
+- refactor: Se refactorizó el método `display` en `backgammon/core/board.py` para renderizar una representación en arte ASCII del tablero de juego. Esto mejora significativamente la experiencia de usuario en la interfaz de línea de comandos, proporcionando un diseño claro, intuitivo y visualmente atractivo.
+
+#### Mejoras incluidas:
+- Diseño completo del tablero con numeración de puntos.
+- Caracteres 'W' y 'B' para representar las fichas blancas y negras.
+- Área designada para la barra.
+- Conteo claro de fichas en la barra y fichas que han salido (bear-off).
+
+### Fixed
+
+- Se actualizaron las pruebas unitarias correspondientes al método `display` para validar el nuevo formato ASCII, asegurando que los cambios estén cubiertos y que el conjunto de tests siga siendo robusto.
+- La lógica central del juego y la interfaz gráfica Pygame no se ven afectadas por esta mejora visual.
 
 ---
 
 **Referencias:**
 
-- backgammon/pygame_ui/ui.py
+- backgammon/core/board.py
+- tests/
 
-**¿La salida fue usada sin cambios?**  
-Sí, la salida fue incorporada sin modificaciones.
+La salida fue usada sin cambios.
 
-**Referencia a los archivos finales que incorporaron contenido generado por IA:**  
-
+**Referencia a los archivos finales que incorporaron contenido generado por IA:**
 - CHANGELOG.md
+- prompts/prompts-documentacion.md
+
+---
+
+## Prompt
+
+Modelo / herramienta usada: GitHub Copilot
+
+Prompt exacto:
+Plante los siguientes cambios en español en changelog siguiendo versionado semantico y "keep a changelog" ademas de plantear este prompt en "prompts de documentacion"
+Texto:
+This commit resolves all failing tests and increases the overall test coverage to 91%.
+
+The main changes include:
+- Mocking the pygame module in `tests/test_ui.py` to resolve import errors.
+- Correcting assertions in `tests/test_backgammon.py`.
+- Adding new unit tests to `tests/test_dice.py`, `tests/test_backgammon.py`, and `tests/test_board.py` to increase coverage.
+- Fixing a bug in the `jugador_pip_count` method in `backgammon/core/board.py`.
+
+**Instrucciones del sistema:**  
+Siempre sigue los principios SOLID  
+Incluir docstrings y comentarios claros en el código generado  
+Proporciona una explicación detallada para cada prompt y documenta tanto el prompt como la respuesta generada dentro de los archivos prompts/prompts-desarrollo.md, prompts/prompts-documentacion.md o prompts/prompts-testing.md. Usa únicamente estos archivos para la documentación de prompts.  
+Por cada prompt debe quedar registrado: Modelo / herramienta usada (nombre y versión si corresponde), El texto exacto del prompt (sin reescrituras subjetivas), Instrucciones del sistema (si las hubo), Respuesta/resultado completo devuelto por la IA, Indicar si la salida fue usada sin cambios, usada con modificaciones (mostrar las modificaciones) o descartada, Referencia a los archivos finales que incorporaron contenido generado por IA (ej:core/board.py)
+
+**Respuesta/resultado completo devuelto por la IA:**
+
+Se añadió la siguiente entrada al archivo CHANGELOG.md:
+
+## [1.6.8] - 2025-10-29
+
+### Fixed
+
+- Se resolvieron todos los tests que fallaban y se incrementó la cobertura total de pruebas al 91%.
+- Se corrigió un bug en el método `jugador_pip_count` de `backgammon/core/board.py`.
+
+### Added
+
+- Se añadieron nuevos tests unitarios en `tests/test_dice.py`, `tests/test_backgammon.py` y `tests/test_board.py` para aumentar la cobertura.
+- Se implementó el mock del módulo `pygame` en `tests/test_ui.py` para resolver errores de importación.
+
+### Changed
+
+- Se corrigieron las aserciones en `tests/test_backgammon.py` para reflejar correctamente los resultados esperados.
+
+---
+
+**Referencias:**
+
+- tests/test_ui.py
+- tests/test_backgammon.py
+- tests/test_dice.py
+- tests/test_board.py
+- backgammon/core/board.py
+
+La salida fue usada sin cambios.
+
+**Referencia a los archivos finales que incorporaron contenido generado por IA:**
+- CHANGELOG.md
+- prompts/prompts-documentacion.md

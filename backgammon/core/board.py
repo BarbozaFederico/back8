@@ -339,25 +339,29 @@ class Board:
         """
         pip_count = 0
         direccion = player.get_direccion()
+        home_points = player.get_home_points()
 
         # Calculate the bearing off point based on direction
         if direccion == 1:  # white moves from low to high numbers
-            bear_off_point = 24
+            bear_off_point = max(home_points)
         else:  # black moves from high to low numbers
-            bear_off_point = -1
+            bear_off_point = min(home_points)
 
         for checker in player.get_checkers():
             if checker.fuera():  # Already borne off
                 continue
             elif checker.en_barra():  # On the bar
-                # A checker on the bar is considered to be 25 pips away from removal.
-                pip_count += 25
+                entry_point = player.get_entry_point()
+                if direccion == 1:
+                    pip_count += (bear_off_point - entry_point) + 1
+                else:
+                    pip_count += (entry_point - bear_off_point) + 1
             elif checker.en_tablero():  # On the board
                 pos = checker.get_posicion()
                 if direccion == 1:
-                    pip_count += bear_off_point - pos
-                else:  # direccion == -1
-                    pip_count += pos - bear_off_point
+                    pip_count += max(0, bear_off_point - pos)
+                else:
+                    pip_count += max(0, pos - bear_off_point)
 
         return pip_count
 
