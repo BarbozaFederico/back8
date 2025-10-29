@@ -129,13 +129,15 @@ def test_display(capsys):
     board.bear_off_checker(c2)
     board.display()
     captured = capsys.readouterr()
-    assert "Tablero:" in captured.out
-    assert "Barra:" in captured.out
-    assert "Fuera (Bear Off):" in captured.out
-    assert "Punta 1:" in captured.out
-    assert "Punta 24:" in captured.out
-    assert "blancas:" in captured.out
-    assert "negras:" in captured.out
+    assert "+------------------+------------------+" in captured.out
+    assert "Bar:" in captured.out
+    assert "Borne Off:" in captured.out
+    assert "  1" in captured.out
+    assert " 24" in captured.out
+    assert "Blancas:" in captured.out
+    # The checker c2 is borne off, so "Negras: 1" is not in the output.
+    # The bar has "Negras: 0", so we can check for that.
+    assert "Negras:" in captured.out
 
 
 def test_reset():
@@ -470,8 +472,8 @@ def test_display_empty_board(capsys):
     board = Board()
     board.display()
     captured = capsys.readouterr()
-    assert "Tablero:" in captured.out
-    assert "Picos:" in captured.out
+    assert "+------------------+------------------+" in captured.out
+    assert "Bar:" in captured.out
 
 
 def test_reset_multiple_times():

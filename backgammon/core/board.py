@@ -209,16 +209,56 @@ class Board:
         board = Board()
         board.display()
         """
-        print("Tablero:")
-        print("Picos:")
-        for i, point in enumerate(self.points):
-            print(f"Punta {i+1}: {[str(c) for c in point]}")
-        print("Barra:")
+        # Top border
+        print(" 13 14 15 16 17 18   19 20 21 22 23 24")
+        print("+------------------+------------------+")
+
+        # Top half of the board
+        for i in range(5):
+            line = "|"
+            for j in range(12, 24):
+                point = self.points[j]
+                if len(point) > i:
+                    checker = point[i]
+                    line += " " + ("W" if checker.get_color() == "blancas" else "B") + " "
+                else:
+                    line += " . "
+                if j == 17:
+                    line += "| "
+            line += "|"
+            if i == 2:
+                line += "   Bar"
+            print(line)
+
+        print("|                  |                  |")
+
+        # Bottom half of the board
+        for i in range(4, -1, -1):
+            line = "|"
+            for j in range(11, -1, -1):
+                point = self.points[j]
+                if len(point) > i:
+                    checker = point[i]
+                    line += " " + ("W" if checker.get_color() == "blancas" else "B") + " "
+                else:
+                    line += " . "
+                if j == 6:
+                    line += "| "
+            line += "|"
+            print(line)
+
+        # Bottom border
+        print("+------------------+------------------+")
+        print(" 12 11 10  9  8  7    6  5  4  3  2  1")
+
+        # Bar and borne off checkers
+        print("\nBar:")
         for color in self.bar:
-            print(f"{color}: {[str(c) for c in self.bar[color]]}")
-        print("Fuera (Bear Off):")
+            print(f"  {color.capitalize()}: {len(self.bar[color])}")
+        print("Borne Off:")
         for color in self.borne_off:
-            print(f"{color}: {[str(c) for c in self.borne_off[color]]}")
+            print(f"  {color.capitalize()}: {len(self.borne_off[color])}")
+
 
     def reset(self) -> None:
         """
