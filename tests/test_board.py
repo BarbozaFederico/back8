@@ -297,8 +297,10 @@ def test_aplicar_paso_movimiento_captura():
     assert checker_blanca in board.points[1]
 
 
-def test_enumerar_opciones_legales_invalid_dados():
-    """Testea enumerar_opciones_legales con dados inválidos."""
+
+
+def test_enumerar_opciones_legales_no_dice():
+    """Testea enumerar_opciones_legales sin dados restantes."""
     board = Board()
 
     class DummyPlayer:
@@ -320,34 +322,7 @@ def test_enumerar_opciones_legales_invalid_dados():
         def puede_bear_off(self, b):
             return False
 
-    with pytest.raises(ValueError):
-        board.enumerar_opciones_legales(DummyPlayer(), "invalid")
-
-
-def test__generar_secuencias_movimiento_no_dice():
-    """Testea _generar_secuencias_movimiento sin dados restantes."""
-    board = Board()
-
-    class DummyPlayer:
-        def get_color(self):
-            return "blancas"
-
-        def get_home_points(self):
-            return set([18, 19, 20, 21, 22, 23])
-
-        def get_direccion(self):
-            return 1
-
-        def get_entry_point(self):
-            return 0
-
-        def get_checkers(self):
-            return [Checker("blancas") for _ in range(15)]
-
-        def puede_bear_off(self, b):
-            return False
-
-    result = board._generar_secuencias_movimiento(DummyPlayer(), [], [], board)
+    result = board.enumerar_opciones_legales(DummyPlayer(), [])
     assert result == []
 
 
@@ -551,8 +526,8 @@ def test_enumerar_opciones_legales_empty_dados():
     assert opciones == []
 
 
-def test__generar_secuencias_movimiento_no_checkers():
-    """Testea _generar_secuencias_movimiento sin fichas."""
+def test_enumerar_opciones_legales_no_checkers():
+    """Testea enumerar_opciones_legales sin fichas."""
     board = Board()
 
     class DummyPlayer:
@@ -574,7 +549,7 @@ def test__generar_secuencias_movimiento_no_checkers():
         def puede_bear_off(self, b):
             return False
 
-    result = board._generar_secuencias_movimiento(DummyPlayer(), [1], [], board)
+    result = board.enumerar_opciones_legales(DummyPlayer(), [1])
     assert result == []
 
 

@@ -1,6 +1,5 @@
-"""pass"""
-
-from typing import List, Optional, Dict, TYPE_CHECKING
+from __future__ import annotations
+from typing import List, Optional, Dict, TYPE_CHECKING, Sequence
 
 if TYPE_CHECKING:
     from backgammon.core.player import (
@@ -8,9 +7,12 @@ if TYPE_CHECKING:
         OpcionMovimiento,
         PasoMovimiento,
         SecuenciaMovimiento,
+        ValorDado,
     )
     from backgammon.core.checker import Checker
     from backgammon.core.dice import Dice
+
+from backgammon.core.player import OpcionMovimiento
 
 
 class Board:
@@ -336,11 +338,6 @@ class Board:
         secuencia : SecuenciaMovimiento
             Sequence of move steps to apply
         """
-        from backgammon.core.player import (  # pylint: disable=unused-import
-            SecuenciaMovimiento,
-            PasoMovimiento,
-        )  # pylint: disable=unused-import
-
         for paso in secuencia:
             self._aplicar_paso_movimiento(player, paso)
 
@@ -677,3 +674,158 @@ class Board:
             if checkers and checkers[0].get_color() == opponent_color:
                 return True
         return False
+
+    def enumerar_opciones_legales(
+        self, player: "Player", dados: "Sequence[ValorDado]"
+    ) -> List["OpcionMovimiento"]:
+        """
+        Genera y devuelve todas las secuencias de movimiento legales para un jugador y
+        un conjunto de dados, aplicando todas las reglas del backgammon, incluyendo
+        el uso obligatorio del máximo número de dados posible.
+        """
+        from backgammon.core.player import OpcionMovimiento, ValorDado
+
+        # 1. Preparar dados (regla de dobles)
+        if len(dados) == 2 and dados[0] == dados[1]:
+            dados_a_usar = [dados[0]] * 4
+        else:
+            dados_a_usar = list(dados)
+
+        opciones_completas = []
+
+        # 2. Iniciar la búsqueda recursiva
+        self._encontrar_secuencias_recursivo(
+            player, dados_a_usar, [], opciones_completas
+        )
+
+        # 3. Filtrar para cumplir la regla del máximo de dados
+        if not opciones_completas:
+            return []
+
+        max_dados_usados = max(len(opcion.secuencia) for opcion in opciones_completas)
+        opciones_maximas = [
+            opcion
+            for opcion in opciones_completas
+            if len(opcion.secuencia) == max_dados_usados
+        ]
+
+        # 4. Eliminar duplicados basados en el estado final del tablero
+        opciones_unicas = {}
+        for opcion in opciones_maximas:
+            if opcion.hash_tablero not in opciones_unicas:
+                opciones_unicas[opcion.hash_tablero] = opcion
+
+        return list(opciones_unicas.values())
+
+    def _deshacer_paso_movimiento(
+        self, player: "Player", paso: "PasoMovimiento"
+    ) -> None:
+        """
+        Deshace un único paso de movimiento en el tablero (para backtracking).
+        """
+        color = player.get_color()
+        checker_a_devolver = None
+
+        # 1. Recuperar la ficha que se movió
+        if paso.hasta is None:  # Salió del tablero (bear off)
+            if self.borne_off[color]:
+                # Asumimos que la última ficha sacada es la que queremos devolver
+                checker_a_devolver = self.borne_off[color].pop()
+        else:  # Se movió a un punto
+            if self.points[paso.hasta]:
+                # Buscamos la ficha que corresponde al jugador
+                for i in range(len(self.points[paso.hasta]) - 1, -1, -1):
+                    if self.points[paso.hasta][i].get_color() == color:
+                        checker_a_devolver = self.points[paso.hasta].pop(i)
+                        break
+
+        if checker_a_devolver is None:
+            # Esto no debería ocurrir si la secuencia de deshacer es correcta
+            raise RuntimeError(f"No se encontró la ficha para deshacer el paso: {paso}")
+
+        # 2. Devolver la ficha a su origen
+        if paso.desde is None:  # Venía de la barra
+            self.bar[color].append(checker_a_devolver)
+            checker_a_devolver.enviar_a_barra()
+        else:  # Venía de un punto
+            self.points[paso.desde].append(checker_a_devolver)
+            checker_a_devolver.colocar_en_posicion(paso.desde)
+
+        # 3. Si hubo captura, devolver la ficha capturada al tablero
+        if paso.captura and paso.hasta is not None:
+            oponente_color = "negras" if color == "blancas" else "blancas"
+            if self.bar[oponente_color]:
+                # Asumimos que la última ficha enviada a la barra es la capturada
+                checker_capturado = self.bar[oponente_color].pop()
+                self.points[paso.hasta].append(checker_capturado)
+                checker_capturado.colocar_en_posicion(paso.hasta)
+
+    def _encontrar_secuencias_recursivo(
+        self,
+        player: "Player",
+        dados_restantes: List[int],
+        secuencia_actual: "SecuenciaMovimiento",
+        opciones_completas: List["OpcionMovimiento"],
+    ) -> None:
+        """
+        Función recursiva para explorar todas las posibles secuencias de movimiento
+        usando backtracking (sin deepcopy).
+        """
+        from backgammon.core.player import OpcionMovimiento
+
+        # Comprobar si hay movimientos posibles con los dados restantes
+        hay_movimiento_posible = False
+        for dado in set(dados_restantes):
+            if self._generar_movimientos_posibles(player, dado, self):
+                hay_movimiento_posible = True
+                break
+
+        # Condición de parada: no hay más dados o no hay movimientos posibles
+        if not dados_restantes or not hay_movimiento_posible:
+            if secuencia_actual:
+                hash_tablero = self._calcular_hash_tablero()
+                opciones_completas.append(
+                    OpcionMovimiento(secuencia=list(secuencia_actual), hash_tablero=hash_tablero)
+                )
+            return
+
+        # Explorar movimientos para cada dado disponible
+        for dado in set(dados_restantes):
+            posibles_pasos = self._generar_movimientos_posibles(player, dado, self)
+
+            for paso in posibles_pasos:
+                # Aplicar movimiento
+                self._aplicar_paso_movimiento(player, paso)
+                secuencia_actual.append(paso)
+
+                nuevos_dados = dados_restantes[:]
+                nuevos_dados.remove(dado)
+
+                # Llamada recursiva
+                self._encontrar_secuencias_recursivo(
+                    player, nuevos_dados, secuencia_actual, opciones_completas
+                )
+
+                # Deshacer movimiento (backtracking)
+                secuencia_actual.pop()
+                self._deshacer_paso_movimiento(player, paso)
+
+    def _calcular_hash_tablero(self) -> str:
+        """
+        Calcula un hash simple basado en la posición de todas las fichas.
+        """
+        partes = []
+        for i, punto in enumerate(self.points):
+            if punto:
+                fichas_str = "".join(sorted(c.get_color()[0] for c in punto))
+                partes.append(f"{i}:{fichas_str}")
+
+        bar_blancas = self.bar.get("blancas", [])
+        if bar_blancas:
+            partes.append(f"bar_b:{len(bar_blancas)}")
+
+        bar_negras = self.bar.get("negras", [])
+        if bar_negras:
+            partes.append(f"bar_n:{len(bar_negras)}")
+
+        return ";".join(partes)
