@@ -91,7 +91,7 @@ def test_roll_dice_and_cli_display(capsys):
     captured = capsys.readouterr()
     assert "Turno de:" in captured.out
     assert "Dados:" in captured.out
-    assert "Tablero:" in captured.out
+    assert "Bar:" in captured.out
 
 
 def test_is_game_over_false_true():
