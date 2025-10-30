@@ -14,4 +14,4 @@ backgammon\core\player.py          80      0      2      0   100%
 ---------------------------------------------------------------------------
 TOTAL                             548     29    228     34    91%
 Coverage XML written to file cobertura.xml
-93 passed in 0.42s
+93 passed in 0.29s
