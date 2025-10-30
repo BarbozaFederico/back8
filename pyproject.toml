@@ -1,0 +1,6 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov --cov-report=term-missing --cov-report=html"
+
+[tool.coverage.run]
+source = ["backgammon/cli", "backgammon/core"]
