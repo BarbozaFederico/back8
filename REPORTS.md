@@ -1,23 +1,45 @@
 # Automated Reports
 ## Coverage Report
 ```text
-........................................................................ [ 77%]
-.....................                                                    [100%]
-================================ tests coverage ================================
-_______________ coverage: platform linux, python 3.10.18-final-0 _______________
+........................................................................ [ 75%]
+.....................F
+=================================== FAILURES ===================================
+______________________________ test_move_from_bar ______________________________
 
-Name                            Stmts   Miss Branch BrPart  Cover   Missing
----------------------------------------------------------------------------
-backgammon/core/backgammon.py      55      0     24      1    99%   110->117
-backgammon/core/board.py          338     29    198     33    87%   316->315, 318, 319->315, 348, 352, 358, 364, 403-404, 409->408, 421->429, 454-455, 469->464, 503-504, 530->537, 545-548, 558-567, 579, 624, 635, 663, 730, 755->754, 771->782, 775->782, 777->782, 778->777, 784, 788-789, 797->exit, 869
-backgammon/core/checker.py         44      0      0      0   100%
-backgammon/core/dice.py            13      0      0      0   100%
-backgammon/core/move.py            18      0      4      0   100%
-backgammon/core/player.py          80      0      2      0   100%
----------------------------------------------------------------------------
-TOTAL                             548     29    228     34    91%
-Coverage XML written to file cobertura.xml
-93 passed in 0.60s
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fa681ba3400>
+mock_pygame = <Mock id='140353117755552'>
+
+    def test_move_from_bar(monkeypatch, mock_pygame):
+        """Test moving a checker from the bar to the board."""
+        # Mock pygame to avoid display initialization
+        monkeypatch.setattr("backgammon.pygame_ui.ui.pygame", mock_pygame)
+    
+        # Initialize UI
+        ui = PygameUI()
+        game = ui.game
+>       player = game.get_current_player()
+
+tests/test_ui.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <backgammon.core.backgammon.BackgammonGame object at 0x7fa681f0a470>
+
+    def get_current_player(self) -> Player:
+        """
+        Returns the current Player object.
+    
+        Returns
+        -------
+        Player
+        """
+>       return self.players[self.current_player_idx]
+E       IndexError: list index out of range
+
+backgammon/core/backgammon.py:158: IndexError
+=========================== short test summary info ============================
+FAILED tests/test_ui.py::test_move_from_bar - IndexError: list index out of range
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 93 passed in 1.45s
 
 ```
 ## Pylint Report
